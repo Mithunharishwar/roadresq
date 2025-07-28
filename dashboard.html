@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>RoadResQ - Dashboard</title>
+</head>
+<body>
+  <body>
+  <h2>Welcome to RoadResQ</h2>
+  <p id="user-info">Loading user info...</p>
+
+  <div id="map" style="height: 400px; width: 100%; margin: 20px 0;"></div>
+  <p id="rescueStatus"></p>
+  <button onclick="requestRescue()">🚨 Request Rescue</button>
+  <button onclick="logOut()">Log Out</button>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDQJlmjJsq86TwNvR-zO7GWKpCPwOYCvrI",
+      authDomain: "roadresq-e4b7b.firebaseapp.com",
+      projectId: "roadresq-e4b7b",
+      storageBucket: "roadresq-e4b7b.appspot.com",
+      messagingSenderId: "47837867447",
+      appId: "1:47837867447:web:2cc1577aabacb9cf2bcc32",
+      measurementId: "G-22B1DBM203"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        document.getElementById("user-info").innerText = "👤 Logged in as: " + user.email;
+        initMap(); // Initialize map after auth
+      } else {
+        window.location.href = "index.html";
+      }
+    });
+
+    function logOut() {
+      auth.signOut().then(() => {
+        window.location.href = "index.html";
+      });
+    }
+
+    function requestRescue() {
+      alert("🚨 Rescue request submitted (We'll implement this in Step 3)");
+    }
+
+    // 📍 Google Map Setup
+    function initMap() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition((position) => {
+          const userLocation = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          };
+
+          const map = new google.maps.Map(document.getElementById("map"), {
+            center: userLocation,
+            zoom: 15
+          });
+
+          new google.maps.Marker({
+            position: userLocation,
+            map: map,
+            title: "You are here"
+          });
+        }, () => {
+          alert("⚠️ Location access denied.");
+        });
+      } else {
+        alert("Geolocation not supported.");
+      }
+    }
+  </script>
+
+  <!-- 🔑 Replace YOUR_API_KEY with your actual Google Maps API key -->
+  <script async
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBYBxYYKT-qhUf_n7WihncoV0Uc1eEdxGQ&callback=initMap">
+</script>
+
+</body>
