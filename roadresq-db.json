@@ -1,0 +1,35 @@
+{
+  "users": {
+    "user_123": {
+      "name": "Gopal",
+      "email": "gopal@example.com",
+      "phone": "9999999999"
+    }
+  },
+  "crews": {
+    "crew_mech_1": {
+      "id": "crew_mech_1",
+      "role": "mechanic",
+      "name": "Ramesh",
+      "rating": 4.8,
+      "status": "available",
+      "location": {"lat": 13.080, "lng": 80.270}
+    },
+    "crew_asst_1": {
+      "id": "crew_asst_1",
+      "role": "assistant",
+      "name": "Kumar",
+      "rating": 4.7,
+      "status": "available",
+      "location": {"lat": 13.082, "lng": 80.272}
+    }
+  },
+  "jobs": {
+    "mechanic": {},
+    "assistant": {},
+    "group": {}
+  },
+  "tokens": {},
+  "hubs": {},
+  "payments": {}
+}

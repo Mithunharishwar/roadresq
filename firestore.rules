@@ -1,0 +1,315 @@
+// RoadResQ Firestore Security Rules
+// Patent-protected platform: Role-based access control for all 3 parties
+// User, Crew (Mechanic/Assistant), Garage, and Admin roles
+
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper Functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function getUserRole() {
+      return request.auth.token.role;
+    }
+
+    function hasRole(role) {
+      return isAuthenticated() && getUserRole() == role;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function isValidLocation(location) {
+      return location is map
+        && location.keys.hasAll(['lat', 'lng'])
+        && location.lat is number
+        && location.lng is number;
+    }
+
+    // ─── USERS ───
+    match /users/{userId} {
+      allow read: if isAuthenticated() && (isOwner(userId) || hasRole('admin'));
+      allow create: if isAuthenticated() && isOwner(userId);
+      allow update: if isAuthenticated() && (
+        (isOwner(userId) && !request.resource.data.keys().hasAny(['role']))
+        || hasRole('admin')
+      );
+      allow delete: if isAuthenticated() && hasRole('admin');
+    }
+
+    // ─── CREWS ───
+    match /crews/{crewId} {
+      allow read: if isAuthenticated() && (isOwner(crewId) || hasRole('user') || hasRole('admin'));
+      allow create: if isAuthenticated() && isOwner(crewId);
+      allow update: if isAuthenticated() && (
+        (isOwner(crewId) && !request.resource.data.keys().hasAny(['isKycVerified', 'rating']))
+        || hasRole('admin')
+      );
+      allow delete: if isAuthenticated() && hasRole('admin');
+    }
+
+    // ─── REQUESTS (SOS Rescues) ───
+    match /requests/{requestId} {
+      allow read: if isAuthenticated() && (
+        resource.data.userId == request.auth.uid
+        || resource.data.assignedMechanicId == request.auth.uid
+        || resource.data.assignedAssistantId == request.auth.uid
+        || hasRole('admin')
+      );
+      allow create: if isAuthenticated();
+      allow update: if isAuthenticated() && (
+        (resource.data.userId == request.auth.uid)
+        || resource.data.assignedMechanicId == request.auth.uid
+        || resource.data.assignedAssistantId == request.auth.uid
+        || hasRole('admin')
+      );
+      allow delete: if isAuthenticated() && hasRole('admin');
+    }
+
+    // ─── JOBS ───
+    match /jobs/{jobId} {
+      allow read: if isAuthenticated() && (
+        resource.data.crewId == request.auth.uid
+        || resource.data.userId == request.auth.uid
+        // A garage reads the jobs handed to it. Without this clause the
+        // GarageDashboard query is denied outright: Firestore cannot prove a
+        // query filtered on `garageId` is safe when no rule mentions it, so it
+        // returns permission-denied before evaluating any data.
+        || resource.data.garageId == request.auth.uid
+        || hasRole('admin')
+      );
+      allow create: if isAuthenticated() && hasRole('admin');
+      allow update: if isAuthenticated() && (
+        (resource.data.crewId == request.auth.uid)
+        || hasRole('admin')
+      );
+      allow delete: if isAuthenticated() && hasRole('admin');
+    }
+
+// ─── TOKENS (Patent: Digital Vehicle Token) ───
+    // Feature 2 Security: 30-min expiry + one-time use.
+    // Atomic verify-and-consume is done ONLY via the `verifyToken`
+    // Cloud Function (admin SDK bypasses these rules). Direct client
+    // updates are restricted so a malicious client cannot reset
+    // `consumedAt` or extend `expiresAt` to reuse a consumed token.
+    match /tokens/{tokenId} {
+      allow read: if isAuthenticated() && (
+        resource.data.userId == request.auth.uid
+        || resource.data.crewId == request.auth.uid
+        || resource.data.garageId == request.auth.uid
+        || hasRole('admin')
+      );
+      allow create: if isAuthenticated() && (
+        hasRole('mechanic') || hasRole('assistant') || hasRole('admin')
+      );
+      // Clients may only update status/timestamps along the lifecycle
+      // (e.g. handed_to_garage → closed). They cannot modify the
+      // security-critical fields used for one-time-use enforcement.
+      allow update: if isAuthenticated() && (
+        (
+          (resource.data.crewId == request.auth.uid
+            || resource.data.garageId == request.auth.uid)
+          && !request.resource.data.diff(resource.data).affectedKeys()
+              .hasAny(['consumedAt', 'consumedBy', 'expiresAt'])
+        )
+        || hasRole('admin')
+      );
+      allow delete: if isAuthenticated() && hasRole('admin');
+    }
+
+    // ─── GARAGES ───
+    match /garages/{garageId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() && hasRole('admin');
+      allow update: if isAuthenticated() && (isOwner(garageId) || hasRole('admin'));
+      allow delete: if isAuthenticated() && hasRole('admin');
+    }
+
+    // ─── ZONES (Patent: Zone-based Security) ───
+    match /zones/{zoneId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() && hasRole('admin');
+      allow update: if isAuthenticated() && hasRole('admin');
+      allow delete: if isAuthenticated() && hasRole('admin');
+    }
+
+    // ─── PAYMENTS ───
+    match /payments/{paymentId} {
+      allow read: if isAuthenticated() && (
+        resource.data.userId == request.auth.uid
+        || resource.data.crewId == request.auth.uid
+        || hasRole('admin')
+      );
+      allow create: if false; // Cloud Functions only
+      allow update: if isAuthenticated() && hasRole('admin');
+      allow delete: if false;
+    }
+
+    // ─── NOTIFICATIONS ───
+    match /notifications/{notificationId} {
+      allow read: if isAuthenticated() && resource.data.userId == request.auth.uid;
+      allow create: if isAuthenticated();
+      allow update: if isAuthenticated() && resource.data.userId == request.auth.uid;
+      allow delete: if isAuthenticated() && resource.data.userId == request.auth.uid;
+    }
+
+    // ─── DISPUTES ───
+    match /disputes/{disputeId} {
+      allow read: if isAuthenticated() && (
+        resource.data.userId == request.auth.uid
+        || resource.data.crewId == request.auth.uid
+        || hasRole('admin')
+      );
+      allow create: if isAuthenticated();
+      allow update: if isAuthenticated() && hasRole('admin');
+      allow delete: if false;
+    }
+
+// ─── ANALYTICS (Read-only, admin only) ───
+    match /analytics/{analyticId} {
+      allow read: if isAuthenticated() && hasRole('admin');
+      allow create: if false;
+      allow update: if false;
+      allow delete: if false;
+    }
+
+    // ─── SOS OTPs (Feature 6) — user reads/writes own OTP doc ───
+    match /sos_otps/{userId} {
+      allow read, write: if isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // ─── SOS Usage counter (Feature 6) — user reads own, write via CF ───
+    match /sos_usage/{usageId} {
+      allow read: if isAuthenticated() && resource.data.userId == request.auth.uid;
+      allow write: if isAuthenticated() && hasRole('admin');
+    }
+
+    // ─── SOS Penalties (Feature 6) ───
+    match /sos_penalties/{penaltyId} {
+      allow read: if isAuthenticated() && (
+        resource.data.userId == request.auth.uid || hasRole('admin')
+      );
+      allow write: if isAuthenticated() && hasRole('admin');
+    }
+
+    // ─── Payment Splits (Feature 4) ───
+    match /payment_splits/{splitId} {
+      allow read: if isAuthenticated() && (
+        resource.data.mechanicId == request.auth.uid
+        || resource.data.assistantId == request.auth.uid
+        || hasRole('admin')
+      );
+      allow write: if hasRole('admin'); // Cloud Functions only
+    }
+
+    // ─── Offline Crew Queue (Feature 5) ───
+    match /crew_offline_queue/{queueId} {
+      allow read: if isAuthenticated() && hasRole('admin');
+      allow write: if isAuthenticated() && hasRole('admin'); // CF only
+    }
+
+    // ─── Security Alerts (Feature 3) ───
+    match /security_alerts/{alertId} {
+      allow read: if isAuthenticated() && (
+        resource.data.userId == request.auth.uid || hasRole('admin')
+      );
+      allow write: if hasRole('admin'); // CF only
+    }
+
+// ─── Emergency SMS queue (Feature 3) ───
+    match /emergency_sms/{smsId} {
+      allow read: if isAuthenticated() && hasRole('admin');
+      allow write: if hasRole('admin'); // CF only
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // NOVEL MODULES — Security Rules (additive)
+    // Client services persist directly to these collections; the
+    // corresponding Cloud Functions also write via admin SDK (bypasses rules).
+    // ═══════════════════════════════════════════════════════════════
+
+    // NOVEL 1: RoadIQ — Demand forecasts / heatmap (admin analytics)
+    match /road_iq_forecasts/{reportId} {
+      allow read: if isAuthenticated() && hasRole('admin');
+      allow write: if hasRole('admin'); // CF only
+    }
+
+    // NOVEL 2: TrustScore — crew trust profiles
+    match /trust_profiles/{crewId} {
+      allow read: if isAuthenticated() && (
+        resource.data.crewId == request.auth.uid || hasRole('admin')
+      );
+      allow write: if isAuthenticated() && (
+        resource.data.crewId == request.auth.uid || hasRole('admin')
+      );
+    }
+
+    // NOVEL 3: Community Mesh — verified community helpers
+    match /community_helpers/{helperId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated();
+      allow update: if isAuthenticated() && (
+        resource.data.userId == request.auth.uid || hasRole('admin')
+      );
+      allow delete: if isAuthenticated() && hasRole('admin');
+    }
+
+    // NOVEL 3: Community Mesh — emergency beacons
+    match /emergency_beacons/{beaconId} {
+      allow read: if isAuthenticated() && (
+        resource.data.userId == request.auth.uid || hasRole('admin')
+      );
+      allow create: if isAuthenticated();
+      allow update: if isAuthenticated() && hasRole('admin');
+      allow delete: if isAuthenticated() && hasRole('admin');
+    }
+
+    // NOVEL 4: Wallet & Loyalty — user wallets
+    match /wallets/{userId} {
+      allow read, write: if isAuthenticated() && (
+        request.auth.uid == userId || hasRole('admin')
+      );
+    }
+
+    // NOVEL 5: Damage Recon — tamper-evident damage captures
+    match /damage_captures/{captureId} {
+      allow read: if isAuthenticated() && (
+        resource.data.userId == request.auth.uid
+        || resource.data.crewId == request.auth.uid
+        || hasRole('admin')
+      );
+      allow create: if isAuthenticated();
+      allow update: if isAuthenticated() && hasRole('admin');
+      allow delete: if isAuthenticated() && hasRole('admin');
+    }
+
+    // NOVEL 6: Digital Garage — vehicle service journals
+    match /vehicle_journals/{vehicleId} {
+      allow read, write: if isAuthenticated() && (
+        resource.data.ownerId == request.auth.uid || hasRole('admin')
+      );
+    }
+
+    // ─── RATINGS (User ratings for crew) ───
+    match /ratings/{ratingId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated();
+      allow update: if isAuthenticated() && (
+        resource.data.userId == request.auth.uid || hasRole('admin')
+      );
+      allow delete: if hasRole('admin');
+    }
+
+    // Default: Deny all other access (uncomment the open rule below for testing)
+    match /{document=**} {
+      // START TESTING RULE — uncomment for development only:
+      // allow read, write: if true;
+      allow read, write: if false;
+    }
+  }
+}
+

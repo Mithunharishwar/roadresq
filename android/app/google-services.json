@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "47837867447",
+    "firebase_url": "https://roadresq-e4b7b-default-rtdb.firebaseio.com",
+    "project_id": "roadresq-e4b7b",
+    "storage_bucket": "roadresq-e4b7b.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:47837867447:android:89e0f4253c1999912bcc32",
+        "android_client_info": {
+          "package_name": "com.example.roadresq"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCjGcPZ8wtqhFYYNWW06so-uFStbehehts"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,31 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "RoadResQ — phone (LAN host 192.168.31.206)",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "debug",
+      "deviceId": "RZ8NB1FRMRF",
+      "toolArgs": [
+        "--dart-define=ROADRESQ_HOST=http://192.168.31.206:5050"
+      ]
+    },
+    {
+      "name": "RoadResQ — Android emulator",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "debug",
+      "toolArgs": [
+        "--dart-define=ROADRESQ_EMULATOR=true"
+      ]
+    },
+    {
+      "name": "RoadResQ — Windows desktop",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "debug",
+      "deviceId": "windows"
+    }
+  ]
+}
