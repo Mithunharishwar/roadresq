@@ -96,7 +96,7 @@ and `/api/assistant/login`. [V] So this needs a decision: reuse
 | Secret | Locations |
 |---|---|
 | Razorpay key `rzp_test_SbTmM0x0VYHxcN` | `lib/services/payment_service.dart:30`, `lib/screens/payment_screen.dart:35`, `lib/core/constants/app_constants.dart:51` |
-| Google Maps key `AIzaSyC9-oYH5WgjrauuGzK_XOBqQLDPPIx7WpY` | `lib/screens/request_location_screen.dart:59`, `lib/screens/user_tracking_screen.dart:49` |
+| Google Maps key *(redacted — now build-time injected; see README > API keys)* | `lib/core/config/api_keys.dart`, `android/app/build.gradle.kts`, `android/local.properties` |
 | Fixed OTP `'123456'` | `lib/pages/user_login_page.dart:42`, `lib/features/auth/otp_screen.dart:25` |
 
 The Maps key already has a `// TODO: Replace with your actual Google Maps API key`

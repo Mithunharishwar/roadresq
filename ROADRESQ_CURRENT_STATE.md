@@ -174,8 +174,7 @@ Therefore **no experiment in §45 can currently be run and no journal metric in 
 | `backend/roadresq_backend.py:10` | `SECRET_KEY = 'roadresq-secret-key'` |
 | `backend/roadresq_backend.py:26` | `mongodb://localhost:27017/` (no auth) |
 | `lib/firebase_options.dart:44,55,64,74,84` | 5 Firebase `apiKey` literals |
-| `lib/screens/request_location_screen.dart:59` | Google Maps key `AIzaSyC9-...` |
-| `lib/screens/user_tracking_screen.dart:49` | Google Maps key `AIzaSyC9-...` |
+| `lib/core/config/api_keys.dart` | Google Maps key — build-time only (`--dart-define` / `MAPS_API_KEY`), value redacted |
 | `lib/core/constants/app_constants.dart:51`, `lib/services/payment_service.dart:30`, `lib/screens/payment_screen.dart:35` | Razorpay key `rzp_test_SbTmM0x0VYHxcN` |
 | `functions/index.js:31,32,1896,1921` | Razorpay `key_secret` fallback `"test_secret"` |
 
