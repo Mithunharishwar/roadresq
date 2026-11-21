@@ -9,7 +9,6 @@ library;
 
 import 'package:flutter/material.dart';
 
-import '../core/theme/app_theme.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../core/constants/app_constants.dart';

@@ -280,6 +280,8 @@ class _UserSignupPageState extends State<UserSignupPage> {
                       onTap: isLoading
                           ? null
                           : () async {
+                              final messenger =
+                                  ScaffoldMessenger.of(context);
                               try {
                                 final picked = await ImagePicker().pickImage(
                                   source: ImageSource.gallery,
@@ -290,8 +292,7 @@ class _UserSignupPageState extends State<UserSignupPage> {
                                   setState(() => _photo = picked);
                                 }
                               } catch (e) {
-                                if (!mounted) return;
-                                ScaffoldMessenger.of(context).showSnackBar(
+                                messenger.showSnackBar(
                                   SnackBar(
                                     content: Text(
                                       'Could not open the gallery: $e',

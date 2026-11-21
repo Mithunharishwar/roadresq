@@ -185,10 +185,10 @@ class _ArrivalTokenScreenState extends State<ArrivalTokenScreen> {
                     const SizedBox(height: 10),
                     TextButton.icon(
                       onPressed: () async {
+                        final messenger = ScaffoldMessenger.of(context);
                         await Clipboard.setData(
                             ClipboardData(text: _token ?? ''));
-                        if (!mounted) return;
-                        ScaffoldMessenger.of(context).showSnackBar(
+                        messenger.showSnackBar(
                           const SnackBar(
                             content: Text('Token copied',
                                 style: TextStyle(inherit: true)),

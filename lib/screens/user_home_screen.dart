@@ -34,8 +34,6 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
   String _locationLabel = 'Locating your position…';
   final TextEditingController _searchController = TextEditingController();
   bool _searching = false;
-  double? _lat;
-  double? _lng;
 
   @override
   void initState() {
@@ -60,8 +58,6 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
   Future<void> _locateMe() async {
     try {
       final position = await _determinePosition();
-      _lat = position.latitude;
-      _lng = position.longitude;
       _mapController?.animateCamera(
         CameraUpdate.newCameraPosition(
           CameraPosition(
@@ -146,8 +142,6 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
         throw Exception('That place has no coordinates');
       }
 
-      _lat = lat;
-      _lng = lng;
       _mapController?.animateCamera(
         CameraUpdate.newCameraPosition(
           CameraPosition(target: LatLng(lat, lng), zoom: 16),
@@ -265,6 +259,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
     final phoneController = TextEditingController(
         text: prefs.getString('emergency_contact_phone'));
 
+    if (!mounted) return;
     final saved = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(

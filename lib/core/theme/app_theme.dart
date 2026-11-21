@@ -122,9 +122,6 @@ class AppTheme {
   static const Color darkText = Color(0xFFE9EEF6);
   static const Color darkMuted = Color(0xFF9BA8BA);
 
-  static const Color _darkSurface = darkSurface;
-  static const Color _darkSurfaceHigh = darkSurfaceHigh;
-  static const Color _darkInput = darkField;
   static const Color onDark = darkText;
 
   // ──────────── Dark Theme ────────────

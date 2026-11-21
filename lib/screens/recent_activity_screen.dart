@@ -65,9 +65,8 @@ class _RecentActivityScreenState extends State<RecentActivityScreen> {
                   'time': (r['updatedAt'] ?? r['createdAt'] ?? '').toString(),
                 })
             .toList();
-        if (fromServer.isNotEmpty) items = fromServer;
         // Local entries only matter when the server has nothing to say.
-        else if (items.isNotEmpty) items = items;
+        if (fromServer.isNotEmpty) items = fromServer;
       } catch (e) {
         debugPrint('RecentActivityScreen: could not load server history: $e');
       }
