@@ -464,6 +464,22 @@ cd functions
 npm run serve
 ```
 
+### One-shot verification
+
+`scripts/verify` runs everything CI runs — analysis, backend pytest and the
+Cloud Functions syntax check — in a single command:
+
+```bash
+./scripts/verify.sh        # macOS / Linux / CI
+```
+
+```powershell
+powershell -File scripts\verify.ps1   # Windows
+```
+
+Current state: `flutter analyze` reports no issues and the backend suite passes
+89 tests.
+
 ---
 
 ## 📈 Scalability
