@@ -7,6 +7,7 @@ import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import '../services/api_service.dart';
 import '../services/live_tracking_service.dart';
 import '../services/socket_service.dart';
+import '../core/config/api_keys.dart';
 import '../core/request_status.dart';
 import '../core/session/app_session.dart';
 import 'payment_screen.dart';
@@ -56,7 +57,9 @@ class _UserTrackingScreenState extends State<UserTrackingScreen> {
   Set<Polyline> polylines = {};
   List<LatLng> routePoints = [];
 
-  final String googleApiKey = 'AIzaSyC9-oYH5WgjrauuGzK_XOBqQLDPPIx7WpY';
+  /// Injected at build time — see core/config/api_keys.dart. Empty when the
+  /// build supplied no key, in which case routing falls back to a straight line.
+  final String googleApiKey = ApiKeys.googleMaps;
 
   @override
   void initState() {
@@ -237,6 +240,23 @@ class _UserTrackingScreenState extends State<UserTrackingScreen> {
   }
 
   Future<void> _fetchRoute(LatLng origin, LatLng destination) async {
+    if (googleApiKey.isEmpty) {
+      // No key configured for this build: draw the direct line instead of
+      // issuing a Directions request that would be rejected.
+      if (!mounted) return;
+      setState(() {
+        polylines = {
+          Polyline(
+            polylineId: const PolylineId('route_fallback'),
+            color: Colors.blue,
+            width: 5,
+            points: [origin, destination],
+          ),
+        };
+      });
+      return;
+    }
+
     try {
       final polylinePoints = PolylinePoints();
       final result = await polylinePoints.getRouteBetweenCoordinates(

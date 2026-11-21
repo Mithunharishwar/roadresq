@@ -85,6 +85,9 @@ macos/Flutter/ephemeral/
 *.env
 !.env.example
 backend/.env
+
+# Per-developer build-time keys (flutter --dart-define-from-file)
+dart_defines.json
 firebase-debug.log
 firebase-debug.*.log
 .firebase/

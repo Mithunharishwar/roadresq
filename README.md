@@ -1,5 +1,8 @@
 # 🚗 RoadResQ - On-Demand 2-Man Roadside Assistance Platform
 
+![Flutter](https://img.shields.io/badge/Flutter-3.41.4-02569B?logo=flutter&logoColor=white)
+![Python](https://img.shields.io/badge/Python-3.12-3776AB?logo=python&logoColor=white)
+
 **Patent-Protected Platform | Chennai, India**
 
 RoadResQ is a production-ready, scalable, cross-platform Flutter application with Firebase backend that provides on-demand roadside assistance with a novel **2-Man Crew Dispatch System**, **Digital Vehicle Token System**, and **Zone-Based Security Logic**.
@@ -180,10 +183,42 @@ roadresq/
 
 ### Step 1: Clone & Install Flutter Dependencies
 ```bash
-git clone https://github.com/your-org/roadresq.git
+git clone https://github.com/Mithunharishwar/roadresq.git
 cd roadresq
 flutter pub get
 ```
+
+### Step 1b: Configure the Google Maps key
+
+No API key is committed to this repository. Copy the example defines file and
+add your own key:
+
+```bash
+cp dart_defines.example.json dart_defines.json
+```
+
+```json
+{ "GOOGLE_MAPS_API_KEY": "AIza..." }
+```
+
+`dart_defines.json` is git-ignored, and the committed VS Code launch
+configurations already load it. Command-line builds pass it explicitly:
+
+```bash
+flutter run --dart-define-from-file=dart_defines.json
+```
+
+The Android Maps SDK reads its key separately, through the `MAPS_API_KEY`
+Gradle manifest placeholder — set it in `android/local.properties`
+(git-ignored) or the environment:
+
+```properties
+MAPS_API_KEY=AIza...
+```
+
+If no key is supplied the app still runs; route lines degrade to a straight
+line between the two points instead of issuing an unauthenticated Directions
+request.
 
 ### Step 2: Firebase Setup
 ```bash
@@ -448,6 +483,9 @@ npm run serve
 - **Payment Security**: Razorpay with server-side signature verification
 - **Data Encryption**: Firebase at-rest and in-transit encryption
 - **Token Validation**: QR code scanning for secure vehicle handover
+- **Key Handling**: API keys are build-time injected (`--dart-define-from-file`,
+  `MAPS_API_KEY` manifest placeholder); no key is committed. Restrict the Maps
+  key to your Android package + SHA-1 and web origins in Google Cloud Console.
 
 ---
 

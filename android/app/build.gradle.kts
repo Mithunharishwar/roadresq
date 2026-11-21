@@ -6,6 +6,14 @@ plugins {
     id("dev.flutter.flutter-gradle-plugin")
 }
 
+// Resolved from android/local.properties, then the environment. Never committed.
+val mapsApiKey: String = run {
+    val props = java.util.Properties()
+    val local = rootProject.file("local.properties")
+    if (local.exists()) local.inputStream().use { props.load(it) }
+    props.getProperty("MAPS_API_KEY") ?: System.getenv("MAPS_API_KEY") ?: ""
+}
+
 android {
     namespace = "com.example.roadresq"
     compileSdk = flutter.compileSdkVersion
@@ -30,6 +38,11 @@ android {
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+
+        // Google Maps key for the Android SDK. Kept out of version control:
+        // supply it as MAPS_API_KEY in android/local.properties (git-ignored)
+        // or in the environment. See README > API keys.
+        manifestPlaceholders["MAPS_API_KEY"] = mapsApiKey
     }
 
     buildTypes {

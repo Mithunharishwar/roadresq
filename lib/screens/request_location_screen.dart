@@ -7,6 +7,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 
 import '../services/api_service.dart';
+import '../core/config/api_keys.dart';
 import '../core/request_status.dart';
 import '../services/activity_service.dart';
 import '../services/socket_service.dart';
@@ -55,9 +56,9 @@ class _RequestLocationScreenState extends State<RequestLocationScreen> {
   Set<Polyline> polylines = {};
   List<LatLng> routePoints = [];
 
-  // IMPORTANT: Replace with your actual Google Maps API key from a secure source.
-  final String googleApiKey =
-      'AIzaSyC9-oYH5WgjrauuGzK_XOBqQLDPPIx7WpY'; // TODO: Replace with your actual Google Maps API key.
+  /// Injected at build time — see core/config/api_keys.dart. Empty when the
+  /// build supplied no key, in which case routing falls back to a straight line.
+  final String googleApiKey = ApiKeys.googleMaps;
 
   @override
   void initState() {
@@ -93,7 +94,7 @@ class _RequestLocationScreenState extends State<RequestLocationScreen> {
 
   Future<void> fetchRoute(LatLng origin, LatLng destination) async {
     try {
-      if (googleApiKey.startsWith('YOUR_REAL')) {
+      if (googleApiKey.isEmpty) {
         if (!mounted) return;
         setState(() {
           polylines = {

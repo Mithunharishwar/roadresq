@@ -33,10 +33,11 @@
             </intent-filter>
         </activity>
 
-        <!-- ADD THIS LINE FOR GOOGLE MAPS KEY - REPLACE YOUR_KEY_HERE -->
+        <!-- Google Maps key, injected from MAPS_API_KEY (local.properties or
+             environment) so no key is committed. See README > API keys. -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyC9-oYH5WgjrauuGzK_XOBqQLDPPIx7WpY"/>
+            android:value="${MAPS_API_KEY}"/>
 
         <meta-data
             android:name="flutterEmbedding"

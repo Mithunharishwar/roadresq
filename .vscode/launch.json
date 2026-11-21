@@ -8,6 +8,7 @@
       "flutterMode": "debug",
       "deviceId": "RZ8NB1FRMRF",
       "toolArgs": [
+        "--dart-define-from-file=dart_defines.json",
         "--dart-define=ROADRESQ_HOST=http://192.168.31.206:5050"
       ]
     },
@@ -17,6 +18,7 @@
       "type": "dart",
       "flutterMode": "debug",
       "toolArgs": [
+        "--dart-define-from-file=dart_defines.json",
         "--dart-define=ROADRESQ_EMULATOR=true"
       ]
     },
@@ -25,7 +27,10 @@
       "request": "launch",
       "type": "dart",
       "flutterMode": "debug",
-      "deviceId": "windows"
+      "deviceId": "windows",
+      "toolArgs": [
+        "--dart-define-from-file=dart_defines.json"
+      ]
     }
   ]
 }
