@@ -23,12 +23,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      # Pinned to the SDK this project is developed on. Flutter 3.50.x bundles a
+      # flutter_localizations that needs intl ^0.20.3, but pubspec.yaml pins
+      # intl 0.20.2, so `flutter pub get` cannot resolve there. Bump intl in
+      # pubspec.yaml before moving this pin forward.
       - uses: subosito/flutter-action@v2
         with:
-          channel: stable
+          flutter-version: '3.41.4'
           cache: true
-      # Pin an exact SDK here if CI and local tooling ever disagree:
-      #   flutter-version: '3.41.4'
       - run: flutter pub get
       - run: flutter analyze
 
