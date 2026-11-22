@@ -9,7 +9,7 @@
 // date, read from the same `GET /api/garage/<id>/jobs` endpoint the dashboard
 // uses — one record, two views, no second source of truth.
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../core/request_status.dart';

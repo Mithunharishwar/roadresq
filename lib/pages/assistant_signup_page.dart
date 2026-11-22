@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import '../services/assistant_service.dart';
 import '../core/utils/error_handler.dart';
 import 'assistant_login_page.dart';

@@ -6,7 +6,7 @@
 library;
 
 import 'dart:math';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../models/novel/crew_pulse_model.dart';
 import '../../providers/novel/crew_pulse_provider.dart';

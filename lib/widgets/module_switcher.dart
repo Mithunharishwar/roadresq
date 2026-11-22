@@ -13,7 +13,7 @@
 // demo_access.dart) and then navigates. On a server without development mode it
 // fails visibly instead of pretending to switch.
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:go_router/go_router.dart';
 
 import '../core/router/app_router.dart';

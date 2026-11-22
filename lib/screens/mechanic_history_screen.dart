@@ -9,7 +9,7 @@
 // It now reads GET /api/mechanic/<id>/requests and derives everything from
 // that response. Counters show real numbers; an empty account says so.
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../services/api_service.dart';
 

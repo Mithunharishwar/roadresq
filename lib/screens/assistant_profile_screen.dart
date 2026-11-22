@@ -5,7 +5,7 @@
 /// assigned mechanic is a real stored link, not a hardcoded label.
 library;
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../core/session/app_session.dart';
 import '../core/theme/role_colors.dart';

@@ -13,7 +13,7 @@
 // The "Achievements" section is gone: there is no data behind it anywhere in
 // the system, so it could not be made truthful.
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../services/api_service.dart';
 

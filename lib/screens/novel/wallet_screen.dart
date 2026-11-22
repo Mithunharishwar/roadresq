@@ -4,7 +4,7 @@
 /// credit cashback / referral rewards (demo actions).
 library;
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../models/novel/wallet_model.dart';
 import '../../providers/novel/wallet_provider.dart';

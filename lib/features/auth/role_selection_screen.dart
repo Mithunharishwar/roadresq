@@ -5,7 +5,7 @@
 /// Tapping a card routes to `/login/:role` via go_router.
 library;
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:go_router/go_router.dart';
 
 class RoleSelectionScreen extends StatelessWidget {

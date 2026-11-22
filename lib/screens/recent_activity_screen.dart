@@ -8,7 +8,7 @@
 // history, including dates that had not happened yet. It now reads the real
 // local activity log that ActivityService writes as requests progress.
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../core/theme/app_theme.dart';
 

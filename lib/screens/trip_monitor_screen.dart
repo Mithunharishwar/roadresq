@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import '../services/sensor_service.dart';
 import 'diagnose_screen.dart';
 

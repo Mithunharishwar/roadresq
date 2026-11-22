@@ -4,7 +4,7 @@
 /// helpers + family, and lists the nearby verified helpers.
 library;
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../models/novel/community_helper_model.dart';
 import '../../providers/novel/community_mesh_provider.dart';

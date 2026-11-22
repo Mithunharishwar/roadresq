@@ -4,7 +4,7 @@
 /// (RoadIQ, TrustScore, VehicleJournal, CommunityMesh, Wallet, DamageRecon).
 library;
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// A gradient hero card used at the top of each novel module screen.
 class NovelHero extends StatelessWidget {

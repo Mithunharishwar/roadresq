@@ -4,7 +4,7 @@
 /// exposes the dispatch priority multiplier benefit.
 library;
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../providers/novel/trust_score_provider.dart';
 import '../../widgets/novel/novel_widgets.dart';

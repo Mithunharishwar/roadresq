@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// A reusable card widget for displaying job information.
 class JobCard extends StatelessWidget {

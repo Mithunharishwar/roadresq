@@ -27,7 +27,7 @@
 // The wire format is unchanged: the backend stores the title-case label and
 // accepts legacy tokens on PUT (`in_progress`, `on_the_way`, ...). §37
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// Canonical lifecycle states, in happy-path order.
 ///

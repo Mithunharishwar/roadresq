@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// A reusable primary button widget with loading state support.
 class PrimaryButton extends StatelessWidget {

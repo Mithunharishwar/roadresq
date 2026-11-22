@@ -13,7 +13,7 @@
 //   History → GarageHistoryScreen (finished jobs and billed amounts)
 //   Profile → ProfileScreen (shared across roles)
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

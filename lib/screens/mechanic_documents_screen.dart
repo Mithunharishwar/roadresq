@@ -6,7 +6,7 @@
 /// verification flag itself is admin-only — this screen never sets it.
 library;
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../core/session/app_session.dart';

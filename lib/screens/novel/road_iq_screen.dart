@@ -4,7 +4,7 @@
 /// smart ETA refinement, and pre-warm crew recommendations.
 library;
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../providers/novel/road_iq_provider.dart';
 import '../../widgets/novel/novel_widgets.dart';

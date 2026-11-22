@@ -1,5 +1,5 @@
 // IMPORTANT: Set Firestore Rules to allow read/write for testing
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import '../core/session/app_session.dart';
 import '../services/api_service.dart';
 import '../services/activity_service.dart';

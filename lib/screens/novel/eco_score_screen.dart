@@ -4,7 +4,7 @@
 /// an offset "trees equivalent" counter, and a per-rescue impact breakdown.
 library;
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../models/novel/eco_score_model.dart';
 import '../../providers/novel/eco_score_provider.dart';

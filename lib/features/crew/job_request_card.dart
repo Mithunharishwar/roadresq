@@ -5,7 +5,7 @@
 /// On accept: Updates job doc status to 'accepted', emits socket event
 library;
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../core/constants/app_constants.dart';
 import '../../services/firestore_service.dart';

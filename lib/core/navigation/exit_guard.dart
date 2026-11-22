@@ -19,7 +19,7 @@
 // Behaviour: "Leave RoadResQ?" — Exit closes the app, Cancel stays. Back never
 // leaves a blank screen.
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter/services.dart';
 
 class ExitGuard extends StatelessWidget {

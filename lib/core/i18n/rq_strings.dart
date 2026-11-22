@@ -9,7 +9,7 @@
 /// Material widget localisation follow it too.
 library;
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class RqLocale {

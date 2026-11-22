@@ -4,7 +4,7 @@
 /// so they can be demoed / accessed without touching any existing screens.
 library;
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import '../../widgets/novel/novel_widgets.dart';
 import 'road_iq_screen.dart';
 import 'trust_score_screen.dart';
